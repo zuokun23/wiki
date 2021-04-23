@@ -1,18 +1,4 @@
-POST http://localhost:8882/hello
-Content-Type: application/json
-#
-#> {%
-#client.test("test-hello", function() {
-#  client.log("测试/hello接口");
-#  client.log(response.body);
-#  client.assert(response.status == 200, "返回码不是200");
-#  client.assert(response.body == "hello world");
-#})
-#%}
-
-###
-
-GET http://localhost:8882/test/list
+GET http://localhost:8882/demo/list1
 Accept: application/json
 
 ###
