@@ -1,4 +1,4 @@
-GET http://localhost:8882/demo/list1
+GET http://localhost:8882/ebook/list
 Accept: application/json
 
 ###
