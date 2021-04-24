@@ -5,11 +5,10 @@ import com.carlos.wiki.domain.EbookExample;
 import com.carlos.wiki.mapper.EbookMapper;
 import com.carlos.wiki.req.EbookReq;
 import com.carlos.wiki.resp.EbookResp;
-import org.springframework.beans.BeanUtils;
+import com.carlos.wiki.util.CopyUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,12 +24,8 @@ public class EbookService {
         criteria.andNameLike("%" + req.getName() + "%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
         //持久层返回List<Ebook>需要转换成List<EbookResp>再返回controller
-        List<EbookResp> respList = new ArrayList<>();
-        for (Ebook ebook : ebookList) {
-            EbookResp ebookResp = new EbookResp();
-            BeanUtils.copyProperties(ebook, ebookResp);
-            respList.add(ebookResp);
-        }
+        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
+
         return respList;
     }
 }
