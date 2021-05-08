@@ -5,6 +5,7 @@ import com.carlos.wiki.domain.EbookExample;
 import com.carlos.wiki.mapper.EbookMapper;
 import com.carlos.wiki.req.EbookReq;
 import com.carlos.wiki.resp.EbookResp;
+import com.carlos.wiki.resp.PageResp;
 import com.carlos.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,7 +24,7 @@ public class EbookService {
     private EbookMapper ebookMapper;
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
 
 
         EbookExample ebookExample = new EbookExample();
@@ -32,7 +33,7 @@ public class EbookService {
             criteria.andNameLike("%" + req.getName() + "%");
         }
 
-        PageHelper.startPage(1, 3);
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -42,6 +43,11 @@ public class EbookService {
         //持久层返回List<Ebook>需要转换成List<EbookResp>再返回controller
         List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
 
-        return respList;
+        //pageResp
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
+
+        return pageResp;
     }
 }
