@@ -41,7 +41,8 @@ export default defineComponent({
     const ebooks = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 2,
+      //修改为4页
+      pageSize: 4,
       total: 0
     });
 
@@ -87,16 +88,24 @@ export default defineComponent({
     /**
      * 数据查询
      */
-    const handleQuery = (params: any) => {
+    const handleQuery = (p: any) => {
       //loading是一个等待框的效果
       loading.value = true;
-      axios.get("/ebook/list", params).then((response) =>{
+      axios.get("/ebook/list", {
+        params: {
+          page: p.page,
+          size: p.size,
+        }
+      }).then((response) =>{
         loading.value = false;
         const data = response.data;
-        ebooks.value = data.content;
 
+        //ebooks.value = data.content.list;
+        //由于后端返回的resp变了，所以修改为
+        ebooks.value = data.content.list;
         //重置分页按钮
-        pagination.value.current = params.page;
+        pagination.value.current = p.page;
+        pagination.value.total = data.content.total;
       })
     };
 
@@ -106,13 +115,18 @@ export default defineComponent({
     const handleTableChange = (pagination: any) => {
       console.log("看看自带的分页参数都有啥：" + pagination);
       handleQuery({
+        //这里pagination是局部变量
         page: pagination.current,
         size: pagination.pageSize
       });
     };
 
     onMounted(() => {
-      handleQuery({});
+      handleQuery({
+        page: pagination.value.current,
+        //响应式变量：页面大小
+        size: pagination.value.pageSize
+      });
     });
 
     return {

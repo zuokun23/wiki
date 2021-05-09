@@ -73,19 +73,6 @@
 import { defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import axios from 'axios';
 
-const listData: any = [];
-
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://www.antdv.com/',
-    title: `ant design vue part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
 
 export default defineComponent({
   name: 'Home',
@@ -94,24 +81,29 @@ export default defineComponent({
     const ebooks1 = reactive({books: []})
 
     onMounted(() => {
-      axios.get("/ebook/list").then(
+      axios.get("/ebook/all", {
+        params :{
+          //第一页，每页一千个数据
+          page: 1,
+          size: 1000
+        }
+      }).then(
           (response) => {
             const data = response.data;
-            ebooks.value = data.content;
-            ebooks1.books = data.content;
+            ebooks.value = data.content.list;
+            //ebooks1.books = data.content;
           });
     });
 
     return{
       ebooks,
-      ebooks2: toRef(ebooks1, "books"),
-      listData,
-      pagination : {
-        onChange: (page: any) => {
-          console.log(page);
-        },
-        pageSize: 3,
-      },
+      //ebooks2: toRef(ebooks1, "books"),
+      // pagination : {
+      //   onChange: (page: any) => {
+      //     console.log(page);
+      //   },
+      //   pageSize: 3,
+      // },
       actions: [
         { type: 'StarOutlined', text: '156' },
         { type: 'LikeOutlined', text: '156' },

@@ -20,8 +20,16 @@ public class EbookController {
     @GetMapping("/list")
     public CommonResp list(EbookReq req){
         CommonResp<PageResp> resp = new CommonResp<>();
-        PageResp<EbookResp> list = ebookService.list(req);
-        resp.setContent(list);
+        PageResp<EbookResp> pageResp = ebookService.list(req);
+        resp.setContent(pageResp);
+        return resp;
+    }
+
+    @GetMapping("/all")
+    public CommonResp all(EbookReq req){
+        CommonResp<PageResp> resp = new CommonResp<>();
+        PageResp<EbookResp> pageResp = ebookService.list(req);
+        resp.setContent(pageResp);
         return resp;
     }
 }

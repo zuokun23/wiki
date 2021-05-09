@@ -24,6 +24,7 @@ public class EbookService {
     private EbookMapper ebookMapper;
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
+
     public PageResp<EbookResp> list(EbookReq req){
 
 
