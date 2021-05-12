@@ -2,3 +2,5 @@ GET http://localhost:8882/ebook/list?page=1&size=4
 Accept: application/json
 
 ###
+
+POST http://localhost:8882/ebook/save?name=carlos&description=hello

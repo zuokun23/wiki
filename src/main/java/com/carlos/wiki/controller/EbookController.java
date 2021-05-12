@@ -1,14 +1,13 @@
 package com.carlos.wiki.controller;
 
-import com.carlos.wiki.req.EbookReq;
+import com.carlos.wiki.req.EbookQueryReq;
+import com.carlos.wiki.req.EbookSaveReq;
 import com.carlos.wiki.resp.CommonResp;
-import com.carlos.wiki.resp.EbookResp;
+import com.carlos.wiki.resp.EbookQueryResp;
 import com.carlos.wiki.resp.PageResp;
 import com.carlos.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ebook")
@@ -18,18 +17,25 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookReq req){
+    public CommonResp list(EbookQueryReq req){
         CommonResp<PageResp> resp = new CommonResp<>();
-        PageResp<EbookResp> pageResp = ebookService.list(req);
+        PageResp<EbookQueryResp> pageResp = ebookService.list(req);
         resp.setContent(pageResp);
         return resp;
     }
 
     @GetMapping("/all")
-    public CommonResp all(EbookReq req){
+    public CommonResp all(EbookQueryReq req){
         CommonResp<PageResp> resp = new CommonResp<>();
-        PageResp<EbookResp> pageResp = ebookService.list(req);
+        PageResp<EbookQueryResp> pageResp = ebookService.list(req);
         resp.setContent(pageResp);
+        return resp;
+    }
+
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req){
+        CommonResp resp = new CommonResp();
+        ebookService.save(req);
         return resp;
     }
 }

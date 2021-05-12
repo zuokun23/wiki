@@ -1,6 +1,6 @@
 package com.carlos.wiki.resp;
 
-public class EbookResp {
+public class EbookQueryResp {
     private Long id;
 
     private String name;
