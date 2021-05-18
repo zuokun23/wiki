@@ -8,6 +8,7 @@ import com.carlos.wiki.req.EbookSaveReq;
 import com.carlos.wiki.resp.EbookQueryResp;
 import com.carlos.wiki.resp.PageResp;
 import com.carlos.wiki.util.CopyUtil;
+import com.carlos.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -24,6 +25,10 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
     private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
+
+    //@Resource是jdk自带的注解，@Autowired是Spring自带
+    @Resource
+    private SnowFlake snowFlake;
 
     /**
      * 返回列表
@@ -65,6 +70,8 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         if(ObjectUtils.isEmpty(req.getId())){
             //新增
+            long id = snowFlake.nextId();
+            ebook.setId(id);
             ebookMapper.insert(ebook);
         }else{
             //更新
