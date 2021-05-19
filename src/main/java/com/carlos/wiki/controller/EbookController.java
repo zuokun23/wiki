@@ -9,6 +9,8 @@ import com.carlos.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/ebook")
 public class EbookController {
@@ -17,7 +19,7 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookQueryReq req){
+    public CommonResp list(@Valid EbookQueryReq req){
         CommonResp<PageResp> resp = new CommonResp<>();
         PageResp<EbookQueryResp> pageResp = ebookService.list(req);
         resp.setContent(pageResp);
@@ -25,7 +27,7 @@ public class EbookController {
     }
 
     @GetMapping("/all")
-    public CommonResp all(EbookQueryReq req){
+    public CommonResp all(@Valid EbookQueryReq req){
         CommonResp<PageResp> resp = new CommonResp<>();
         PageResp<EbookQueryResp> pageResp = ebookService.list(req);
         resp.setContent(pageResp);

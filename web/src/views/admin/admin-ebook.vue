@@ -76,6 +76,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue'
 import axios from 'axios'
+import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'AdminEbook',
@@ -84,7 +85,7 @@ export default defineComponent({
     const pagination = ref({
       current: 1,
       //修改为4页
-      pageSize: 4,
+      pageSize: 1001,
       total: 0
     });
 
@@ -142,12 +143,17 @@ export default defineComponent({
         loading.value = false;
         const data = response.data;
 
-        //ebooks.value = data.content.list;
-        //由于后端返回的resp变了，所以修改为
-        ebooks.value = data.content.list;
-        //重置分页按钮
-        pagination.value.current = p.page;
-        pagination.value.total = data.content.total;
+        if(data.success){
+          //ebooks.value = data.content.list;
+          //由于后端返回的resp变了，所以修改为
+          ebooks.value = data.content.list;
+          //重置分页按钮
+          pagination.value.current = p.page;
+          pagination.value.total = data.content.total;
+        }else{
+          message.error(data.message);
+        }
+
       })
     };
 
