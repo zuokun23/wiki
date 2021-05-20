@@ -85,7 +85,7 @@ export default defineComponent({
     const pagination = ref({
       current: 1,
       //修改为4页
-      pageSize: 1001,
+      pageSize: 4,
       total: 0
     });
 
@@ -188,14 +188,16 @@ export default defineComponent({
 
       axios.post("/ebook/save", ebook.value).then((response) =>{
         const data = response.data;//data == commonResp
+        modalLoading.value = false;
         if(data.success){
           modalVisible.value = false;
-          modalLoading.value = false;
           //重新加载列表
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize
           });
+        }else{
+          message.error(data.message);
         }
       })
     };
