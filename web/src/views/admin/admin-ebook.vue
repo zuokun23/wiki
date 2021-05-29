@@ -6,9 +6,30 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
+        <a-form
+            layout="inline"
+            :model="param"
+
+        >
+          <a-form-item>
+            <a-input v-model:value="param.name" placeholder="名称">
+              <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="handleQuery({
+            page: 1,
+            size: pagination.pageSize,
+            name: param.name
+            })" size="large">
+              查询
+            </a-button>
+          </a-form-item>
+          <a-button type="primary" @click="add()" size="large">
+            新增
+          </a-button>
+        </a-form>
+
       </p>
       <a-table :columns="columns"
                :data-source="ebooks"
@@ -138,6 +159,7 @@ export default defineComponent({
         params: {
           page: p.page,
           size: p.size,
+          name: p.name
         }
       }).then((response) =>{
         loading.value = false;
@@ -233,6 +255,13 @@ export default defineComponent({
       })
     }
 
+    /**
+     * 根据name查询列表
+     */
+    const param = ref();
+    param.value = {};
+
+
     return {
       //表格
       ebooks,
@@ -245,6 +274,9 @@ export default defineComponent({
       edit,
       add,
       handleDelete,
+      //根据name查询列表
+      param,
+      handleQuery,
 
       //表单
       ebook,
